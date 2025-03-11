@@ -1,10 +1,11 @@
-import Versions from './components/Versions'
-import electronLogo from './assets/electron.svg'
+import bg from './assets/bg.svg'
 
 function App(): JSX.Element {
-  const ipcHandle = (): void => window.electron.ipcRenderer.send('ping')
-
-  return <></>
+  return (
+    <>
+      <img className="w-full" src={bg}></img>
+    </>
+  )
 }
 
 export default App
