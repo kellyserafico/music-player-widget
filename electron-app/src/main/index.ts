@@ -3,6 +3,14 @@ import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
 
+if (is.dev) {
+  try {
+    require('electron-reloader')(module, { ignore: ['renderer'] })
+  } catch {
+    // electron-reloader may not be in prod
+  }
+}
+
 function createWindow(): void {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
