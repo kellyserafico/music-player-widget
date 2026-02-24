@@ -3,3 +3,13 @@
 body {
   font-family: 'Sour Gummy', sans-serif;
 }
+
+/* Frameless window: drag to move, no-drag so controls stay clickable */
+.drag {
+  -webkit-app-region: drag;
+  app-region: drag;
+}
+.no-drag {
+  -webkit-app-region: no-drag;
+  app-region: no-drag;
+}

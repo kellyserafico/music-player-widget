@@ -1,6 +1,8 @@
 import { useRef, useState, useEffect } from 'react'
 import backIcon from '../assets/back.svg'
 import forwardIcon from '../assets/forward.svg'
+import pauseIcon from '../assets/pause.svg'
+import playIcon from '../assets/play.svg'
 
 function formatTime(seconds: number): string {
   if (!Number.isFinite(seconds) || seconds < 0) return '0:00'
@@ -19,7 +21,6 @@ function AudioPlayer({ src, className = '' }: AudioPlayerProps): JSX.Element {
   const [isPlaying, setIsPlaying] = useState(false)
   const [currentTime, setCurrentTime] = useState(0)
   const [duration, setDuration] = useState(0)
-  const [volume, setVolume] = useState(1)
 
   const SKIP_SECONDS = 10
 
@@ -47,11 +48,6 @@ function AudioPlayer({ src, className = '' }: AudioPlayerProps): JSX.Element {
       el.removeEventListener('pause', onPause)
     }
   }, [])
-
-  useEffect(() => {
-    const el = audioRef.current
-    if (el) el.volume = volume
-  }, [volume])
 
   const togglePlay = (): void => {
     const el = audioRef.current
@@ -90,73 +86,18 @@ function AudioPlayer({ src, className = '' }: AudioPlayerProps): JSX.Element {
 
   return (
     <div
-      className={`flex flex-col gap-2 rounded-xl bg-black/30 p-3 backdrop-blur-sm ${className}`}
+      className={`flex flex-col gap-2 rounded-xl p-3 ${className}`}
       role="region"
       aria-label="Audio player"
     >
       <audio ref={audioRef} src={src} preload="metadata" />
 
-      <div className="flex items-center gap-2">
-        <svg
-          className="h-4 w-4 shrink-0 text-white/70"
-          viewBox="0 0 24 24"
-          fill="currentColor"
-          aria-hidden
-        >
-          <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z" />
-        </svg>
-        <input
-          type="range"
-          min={0}
-          max={1}
-          step={0.05}
-          value={volume}
-          onChange={(e) => setVolume(Number(e.target.value))}
-          className="h-1.5 w-20 cursor-pointer appearance-none rounded-full bg-white/20 accent-white"
-          aria-label="Volume"
-        />
-      </div>
-
       <div className="flex items-center gap-3">
-        <button
-          type="button"
-          onClick={skipBack}
-          className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white/20 text-white transition hover:bg-white/30 focus:outline-none focus:ring-2 focus:ring-white/50"
-          aria-label={`Skip back ${SKIP_SECONDS} seconds`}
-        >
-          <img src={backIcon} alt="" className="h-5 w-5" aria-hidden />
-        </button>
-        <button
-          type="button"
-          onClick={togglePlay}
-          className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white/20 text-white transition hover:bg-white/30 focus:outline-none focus:ring-2 focus:ring-white/50"
-          aria-label={isPlaying ? 'Pause' : 'Play'}
-        >
-          {isPlaying ? (
-            <svg className="h-5 w-5" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
-              <rect x="6" y="4" width="4" height="16" rx="1" />
-              <rect x="14" y="4" width="4" height="16" rx="1" />
-            </svg>
-          ) : (
-            <svg className="ml-0.5 h-5 w-5" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
-              <path d="M8 5v14l11-7L8 5z" />
-            </svg>
-          )}
-        </button>
-        <button
-          type="button"
-          onClick={skipForward}
-          className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white/20 text-white transition hover:bg-white/30 focus:outline-none focus:ring-2 focus:ring-white/50"
-          aria-label={`Skip forward ${SKIP_SECONDS} seconds`}
-        >
-          <img src={forwardIcon} alt="" className="h-5 w-5" aria-hidden />
-        </button>
         <span className="shrink-0 text-sm tabular-nums text-white/90">
           {formatTime(currentTime)}
         </span>
         <div
-          className="group min-w-0 flex-1 cursor-pointer rounded-full bg-white/20 transition hover:bg-white/25"
-          style={{ height: 8 }}
+          className="group h-2 min-w-0 flex-1 cursor-pointer rounded-full bg-white/20 transition hover:bg-white/25"
           onClick={handleSeek}
           role="slider"
           aria-label="Seek"
@@ -180,9 +121,37 @@ function AudioPlayer({ src, className = '' }: AudioPlayerProps): JSX.Element {
             style={{ width: `${progress}%` }}
           />
         </div>
-        <span className="shrink-0 text-sm tabular-nums text-white/90">
-          {formatTime(duration)}
-        </span>
+        <span className="shrink-0 text-sm tabular-nums text-white/90">{formatTime(duration)}</span>
+      </div>
+      <div className="flex items-center justify-center gap-3">
+        <button
+          type="button"
+          onClick={skipBack}
+          className="flex h-10 w-10 shrink-0 items-center justify-center text-white transition focus:outline-none focus:ring-0"
+          aria-label={`Skip back ${SKIP_SECONDS} seconds`}
+        >
+          <img src={backIcon} alt="" className="h-10 w-10" aria-hidden />
+        </button>
+        <button
+          type="button"
+          onClick={togglePlay}
+          className="flex h-10 w-10 shrink-0 items-center justify-center text-white transition focus:outline-none focus:ring-0 mx-2"
+          aria-label={isPlaying ? 'Pause' : 'Play'}
+        >
+          {isPlaying ? (
+            <img src={pauseIcon} alt="" className="h-10 w-10" aria-hidden />
+          ) : (
+            <img src={playIcon} alt="" className="h-10 w-10" aria-hidden />
+          )}
+        </button>
+        <button
+          type="button"
+          onClick={skipForward}
+          className="flex h-10 w-10 shrink-0 items-center justify-center text-white transition focus:outline-none focus:ring-0"
+          aria-label={`Skip forward ${SKIP_SECONDS} seconds`}
+        >
+          <img src={forwardIcon} alt="" className="h-10 w-10" aria-hidden />
+        </button>
       </div>
     </div>
   )
