@@ -1,5 +1,6 @@
 import bg from './assets/bg.svg'
 import demoSong from './assets/Fujii Kaze - masshiro (pure white) [Official Audio].mp3'
+import AudioPlayer from './components/AudioPlayer'
 
 function App(): JSX.Element {
   return (
@@ -11,12 +12,7 @@ function App(): JSX.Element {
         aria-hidden
       />
       <p className="relative z-10 p-2 text-white">fujii kaze - masshiro</p>
-      <audio
-        controls
-        src={demoSong}
-        className="relative z-10"
-        style={{ position: 'absolute', bottom: 8, left: 8, right: 8, width: 'calc(100% - 16px)' }}
-      />
+      <AudioPlayer src={demoSong} className="absolute bottom-2 left-2 right-2 z-10" />
     </div>
   )
 }
