@@ -10,13 +10,18 @@ function createWindow(): void {
     height: 200,
     show: false,
     autoHideMenuBar: true,
-    resizable: false,
+    resizable: true,
     ...(process.platform === 'linux' ? { icon } : {}),
     webPreferences: {
       preload: join(__dirname, '../preload/index.js'),
       sandbox: false
     }
   })
+  //// Load your app's index.html (or the Vite app URL)
+  //mainWindow.loadURL('http://localhost:3000')
+
+  //// Open DevTools automatically
+  //mainWindow.webContents.openDevTools()
 
   mainWindow.on('ready-to-show', () => {
     mainWindow.show()
