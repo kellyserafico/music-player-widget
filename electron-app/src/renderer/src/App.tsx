@@ -23,27 +23,24 @@ function App(): JSX.Element {
       <img
         src={cloud1}
         alt=""
-        className="pointer-events-none absolute bottom-0 left-0 z-[2] h-[20vh] max-w-[28%] w-auto object-contain object-left-bottom opacity-90"
+        className="pointer-events-none absolute bottom-0 left-0 z-[2] h-[35vh] w-auto object-contain object-left-bottom opacity-90"
         aria-hidden
       />
       <img
         src={cloud2}
         alt=""
-        className="pointer-events-none absolute right-0 h-[20vh] max-w-[28%] top-[10vh] z-[1] object-contain object-right-top opacity-90"
+        className="pointer-events-none absolute right-0 h-[80vh] bottom-0 z-[1] object-containopacity-90"
         aria-hidden
       />
       <img
         src={cloud3}
         alt=""
-        className="pointer-events-none absolute top-0 left-1/4 z-[1] h-[20vh] max-w-[28%] -translate-x-1/2 object-contain object-bottom opacity-85"
+        className="pointer-events-none absolute top-0 right-[10%] z-[1] h-[20vh] max-w-[28%] object-contain object-bottom opacity-85"
         aria-hidden
       />
 
       {showPlayer ? (
-        <PlayerPage
-          track={currentTrack}
-          onBack={() => setCurrentTrack(null)}
-        />
+        <PlayerPage track={currentTrack} onBack={() => setCurrentTrack(null)} />
       ) : (
         <PlaylistPage
           onBack={() => window.electron?.ipcRenderer.send('back')}
