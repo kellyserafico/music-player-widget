@@ -1,7 +1,23 @@
 @import 'tailwindcss';
 
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+}
+
 body {
   font-family: 'Sour Gummy', sans-serif;
+}
+
+/* Hide scrollbars but keep scroll behavior */
+* {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+*::-webkit-scrollbar {
+  display: none;
 }
 
 /* Frameless window: drag to move, no-drag so controls stay clickable */
