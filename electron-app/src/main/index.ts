@@ -3,6 +3,14 @@ import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
 
+if (is.dev) {
+  try {
+    require('electron-reloader')(module, { ignore: ['renderer'] })
+  } catch {
+    // electron-reloader may not be in prod
+  }
+}
+
 function createWindow(): void {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
@@ -10,13 +18,19 @@ function createWindow(): void {
     height: 200,
     show: false,
     autoHideMenuBar: true,
-    resizable: false,
+    resizable: true,
+    frame: false,
     ...(process.platform === 'linux' ? { icon } : {}),
     webPreferences: {
       preload: join(__dirname, '../preload/index.js'),
       sandbox: false
     }
   })
+  //// Load your app's index.html (or the Vite app URL)
+  //mainWindow.loadURL('http://localhost:3000')
+
+  //// Open DevTools automatically
+  //mainWindow.webContents.openDevTools()
 
   mainWindow.on('ready-to-show', () => {
     mainWindow.show()
